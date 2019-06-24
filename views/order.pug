@@ -1,0 +1,23 @@
+extends layout
+
+block content 
+    .container(ng-controller="orderController" )
+
+        table.table
+            tr
+                th Order Date
+                th Delivery Date
+                th Party
+                th Grade
+                th Size
+            tr(ng-repeat="order in orders" )
+                th(ng-cloak ng-bind="order.order_date * 1000 | date:'dd MMM yyyy'") 
+                th(ng-cloak ng-bind="order.delivery_date* 1000 | date:'dd MMM yyyy'")
+                th(ng-cloak ng-bind="order.customer_name") 
+                th(ng-cloak ng-bind="order.grade")
+                th(ng-cloak ng-bind="order.size")
+
+
+
+block footJs       
+    script(src="/javascripts/controller/orderController.js")

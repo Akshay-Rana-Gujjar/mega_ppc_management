@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    .container-fluid(ng-controller="rollingController")
+        h3 Job Work (Rolling Mill In)
+        
+        form(ng-submit="")
+            .row
+
+                .col-sm-2
+                    .form-group
+                        label Challan No.
+                        input.form-control(type="text", name="" required)
+
+                .col-sm-2
+                    .form-group
+                        label Size
+                        input.form-control(type="text", name="" required)
+
+                .col-sm-12
+                    .text-center
+                    button.btn.btn-primary(type="submit" ng-disabled="disableRollingInSubmit") Check
+block footJs
+    script(src="/javascripts/controller/rollingController.js")

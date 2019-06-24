@@ -1,0 +1,161 @@
+extends layout
+
+block head
+    
+
+block content   
+    style. 
+        button:disabled {
+            cursor: not-allowed;
+            pointer-events: all !important;
+        }
+
+        body{
+            overflow: visible!important;
+            padding-right: 0px!important;
+        }
+    .container-fluid(ng-controller="approvalPanelController")
+        .row.justify-content-start
+            .col-8
+                .row        
+                    .col-1 Date Range Filter:
+                    .col-4
+                        .form-group 
+                            label Select Range:                 
+                            input.form-control.date-picker(date-range-picker='', type='text', ng-model='datePicker.date')
+                    
+                    .col-2
+                        button.btn.btn-primary.mt-4(ng-click="dateRangeFilterFunction()") Apply
+                        
+                    .col-1 Approval:
+                    .col-2.mt-4
+                        .form-group
+                            select.custom-select(name="" ng-model="filter.approval")
+                                option(value disabled ) -- Select Status --
+                                option(value) All
+                                option(value="approval") Approved
+                                option(value="hold") Hold
+                                option(value="not approval") Not Approved
+                    .col-2.mt-4
+                        button.btn.btn-primary(ng-click="approvalFilter(filter.approval)") Apply
+                        
+                .row
+                    .col-1
+                        small Search in: 
+                    .col-8             
+                        .custom-control.custom-radio.custom-control-inline(ng-init="dateRangeFilterType= 'order_date_timestamp'")
+                            input#customRadioInline1.custom-control-input(type='radio', name='dateRangeFilterType' ng-model="dateRangeFilterType" value="order_date_timestamp")
+                            label.custom-control-label(for='customRadioInline1') Order Date
+                        .custom-control.custom-radio.custom-control-inline
+                            input#customRadioInline2.custom-control-input(type='radio', name='dateRangeFilterType' ng-model="dateRangeFilterType"  value="delivery_date_timestamp")
+                            label.custom-control-label(for='customRadioInline2') Delivery Date
+
+            .col-4
+                .form-inline.my-3.justify-content-end.d-print-none
+                    button.btn.btn-secondary.mr-2.mb-3(ng-click="reload()") Reset All Filters
+                    .input-group.mb-3
+                        .input-group-prepend
+                            span#basic-addon1.input-group-text
+                                i.material-icons search
+                        input.form-control(type='text', placeholder='search...' ng-model="search")
+                    .sticky-top.mx-3
+                        button.btn.btn-outline-dark.p-3.rounded-circle.shadow-lg(title="download as csv" ng-click="downloadAsCSV()")
+                            i.material-icons.align-middle file_download
+            
+        .table-responsive(style="margin-bottom: 130px;")
+            table.table#main-table.table-sm.table-hover
+                tr
+                    td                
+                        .custom-control.custom-checkbox
+                            input#checkAll.custom-control-input(type='checkbox' ng-click="checkAll()" ng-model="checkAllCheckbox" ng-false-value="false")
+                            label.custom-control-label(for='checkAll')
+                    td O.D
+                    td DEL.DT
+                    td DELAY
+                    td MKT
+                    td PARTY NAME
+                    td P.O
+                    td GR.
+                    td Shape
+                    td SUP.COND.
+                    td RT.
+                    td SIZE
+                    td PC
+                    td OB (KG)
+                    td DES (KG)
+                    td BAL (KG)
+                    td GT
+                    td RDY.(KG)
+                    td REQ.(KG)
+                    td PAY. TERM
+                    td FRTG.
+                    td REMARKS
+                    td Approval Status
+
+                tbody(ng-repeat="(orderKey,  orderValue) in orderData | groupBy:'customer_name'" ng-init="grandAmount = 0")                  
+                    tr(ng-repeat="orderdata in orderValue")
+                        td                    
+                            .custom-control.custom-checkbox(ng-init="parentIndex = $parent.$index")
+                                input.custom-control-input(type='checkbox' id="{{'checkbox'+parentIndex+$index}}" checklist-model="bulkAction.bulkOrderChecked" checklist-value="orderdata._id")
+                                label.custom-control-label(for="{{'checkbox'+parentIndex+$index}}")
+                        td {{orderdata.order_date}}
+                        td {{orderdata.delivery_date}}
+                        td {{getDiffDays(orderdata.delivery_date)}}
+                        td {{orderdata.mkt}}
+                        td {{orderdata.customer_name}}
+                        //- td(ng-if="$index == 0") {{orderdata.customer_name}}
+                        //- td(ng-if="$index != 0")
+                        td {{orderdata.po_no}}
+                        td {{orderdata.grade}}
+                        td {{orderdata.product | capitalize}}
+                        td {{orderdata.sup_condi}}
+                        td {{orderdata.rate}}
+                        td {{orderdata.size}}
+                        td {{orderdata.piece}}
+                        td {{orderdata.ob}}
+                        td {{orderdata.des}}
+                        td {{orderdata.bal}}
+                        td(ng-if="$index != orderValue.length-1")
+                        td(ng-if="$index == orderValue.length-1")
+                            strong {{getTotal(orderValue, "bal")}}
+                        td {{productData[orderdata.product][orderdata.size].ready}}
+                        td {{productData[orderdata.product][orderdata.size].required}}
+                        td {{orderdata.pyt}}
+                        td {{orderdata.frtg}}
+                        td {{getRemarks(orderdata.remarks)}}
+                        td.text-white(ng-class="{'bg-warning':orderdata.status == 'hold','bg-success':orderdata.status=='approval','bg-danger':orderdata.status=='not approval'}") {{ orderdata.status | capitalize}}
+                        //- td.text-white 
+                            button(ng-click="approveOrder(orderdata._id, $event, $index)" ng-disabled="orderdata.status =='approval'").btn.btn-primary.btn-sm.mr-1 Approve
+                            button(ng-click="holdOrder(orderdata._id, $event, $index)" ng-disabled="orderdata.status =='hold'").btn.btn-secondary.btn-sm Hold
+
+        .text-center(ng-if="!orderData.length") 
+            h2.text-muted No Data Found!        
+        //- button.btn.btn-info.btn-lg(type='button', data-toggle='modal', data-target='#myModal') Open Modal                            
+        // Modal
+        #myModal.modal.fade(role='dialog'  data-backdrop="false" style="position:static;z-index:auto;display: inline;")
+            .modal-dialog.bottom(style='position:fixed;bottom:0;left:45%;margin:0;width:100%;')
+                // Modal content
+                .modal-content
+                    .modal-header
+                        h6.modal-title Choose Action
+                        button.close(type='button', data-dismiss='modal' ng-click="bulkAction.bulkOrderChecked = [];checkAllCheckbox = false") &times;
+                        
+                    .modal-body.text-white 
+                        .text-white 
+                            button(ng-click="bulkApproveOrder()").btn.btn-primary.mr-1 Approve 
+                            button(ng-click="bulkHoldOrder()").btn.btn-secondary Hold 
+                    
+                    
+
+
+
+
+
+block footJs
+    span#data(data-orderdata=orderData, data-productdata=productStructure)
+    script.
+        var orderData = $('#data').data('orderdata');
+        var productData = $('#data').data('productdata');
+    
+    script(src="/javascripts/controller/approvalPanelController.js")
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

@@ -1,0 +1,101 @@
+extends layout
+
+block content
+    
+
+    .container-fluid(ng-controller="allOrderController")
+       
+        //- .row.justify-content-start
+            .col-8
+                .row        
+                    .col-1 Date Range Filter:
+                    .col-2
+                        .form-group
+                            label After
+                            input.form-control#afterDate(type="text", required )
+                    .col-2
+                        .form-group
+                            label Before
+                            input.form-control#beforeDate(type="text", required )
+                    .col-2
+                        button.btn.btn-primary.mt-4(ng-click="dateRangeFilter()") Apply
+
+                    .col-1 Approval:
+                    .col-2
+                        .form-group
+                            select.custom-select(name="" ng-model="filter.approval")
+                                option(value disabled ) -- Select Status --
+                                option(value) All
+                                option(value="approval") Approved
+                                option(value="hold") Hold
+                                option(value="not approval") Not Approved
+                    .col-2
+                        button.btn.btn-primary(ng-click="approvalFilter(filter.approval)") Apply
+
+            .col-4
+                .form-inline.my-3.justify-content-end.d-print-none
+                    .input-group.mb-3
+                        .input-group-prepend
+                            span#basic-addon1.input-group-text
+                                i.material-icons search
+                        input.form-control(type='text', placeholder='search...' ng-model="search")
+            
+        table.table#main-table
+            tr
+                
+                td O.D
+                td DEL.DT
+                td DELAY
+                td MKT
+                td PARTY NAME
+                td P.O
+                td GR.
+                td Shape
+                td SUP.COND.
+                td RT.
+                td SIZE
+                td PC
+                td OB (KG)
+                td DES (KG)
+                td BAL (KG)
+                td GT
+                td PAY. TERM
+                td FRTG.
+                td REMARKS
+                td Approval Status
+
+            tbody(ng-repeat="(orderKey,  orderValue) in ordersData | filter : search | groupBy:'customer_name'" ng-init="grandAmount = 0")                  
+                tr(ng-repeat="orderdata in orderValue")
+                    
+                    td {{orderdata.order_date}}
+                    td {{orderdata.delivery_date}}
+                    td {{getDiffDays(orderdata.delivery_date)}}
+                    td {{orderdata.mkt}}
+                    td {{orderdata.customer_name}}
+                    //- td(ng-if="$index == 0") {{orderdata.customer_name}}
+                    //- td(ng-if="$index != 0")
+                    td {{orderdata.po_no}}
+                    td {{orderdata.grade}}
+                    td {{orderdata.product | capitalize}}
+                    td {{orderdata.sup_condi}}
+                    td {{orderdata.rate}}
+                    td {{orderdata.size}}
+                    td {{orderdata.piece}}
+                    td {{orderdata.ob}}
+                    td {{orderdata.des}}
+                    td {{orderdata.bal}}
+                    td(ng-if="$index != orderValue.length-1")
+                    td(ng-if="$index == orderValue.length-1") {{getTotal(orderValue, "bal")}}
+                    
+                    td {{orderdata.pyt}}
+                    td {{orderdata.frtg}}
+                    td {{orderdata.remarks}}
+                    td.text-white(ng-class="{'bg-warning':orderdata.status == 'hold','bg-success':orderdata.status=='approval','bg-danger':orderdata.status=='not approval'}") {{ orderdata.status | capitalize}}
+
+block footJs
+    //- getting data from server side
+    span#data(data-orderData=orderDetails)
+    script. 
+        var orderData = $('#data').data('orderdata');
+    script(src="/javascripts/controller/allOrderController.js")
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

@@ -1,0 +1,85 @@
+extends layout
+
+block content
+    style. 
+            button.close{
+                    position: absolute;
+                    right: 10px;
+                    z-index: 1000;
+                    color: red;
+            }
+            input[type=number]::-webkit-inner-spin-button, 
+                input[type=number]::-webkit-outer-spin-button { 
+                -webkit-appearance: none; 
+                margin: 0; 
+            }
+            .text-black{color:black!important;}
+
+    .container-fluid(ng-controller="productController")
+
+        .form-inline.my-3.justify-content-end.d-print-none.mb-3
+            button.btn.btn-secondary.btn-sm.mx-1.align-middle( ng-click="displayNewProductForm= true")
+                i.material-icons.align-middle add
+                | New Product
+
+        .container(ng-show="displayNewProductForm")
+            
+            .card.p-3.my-5.shadow
+                button.close(style="cursor:pointer" ng-click="displayNewProductForm= false") &times;
+                .card-title 
+                    h3 Add New Product
+                
+                form(autocomplete="off" ng-submit="addProductSubmit()")
+                    .row
+                        .col-4
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Product Name" ng-model="newProductData.name" required)
+                        .col-4
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Product Grade" ng-model="newProductData.grade" required)
+                        
+                        .col-4
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Product Size " ng-model="newProductData.size" )
+                        .col-4
+                            .form-group
+                                input.form-control(type="number", name="" placeholder="KG/Per PC" ng-model="newProductData.wt_per_peice" )
+
+                        .col-4
+                            .form-group
+                                input.form-control(type="number", name="" placeholder="Product Ready (KG)" ng-model="newProductData.ready" )
+                        .col-4
+                            .form-group
+                                input.form-control(type="number", name="" placeholder="Product Required (KG)" ng-model="newProductData.required" )
+                        
+                
+                        .col-12.text-center.mt-5.mb-4
+                            button.btn.btn-dark.mt-2(type="submit"  ) Add
+
+
+
+        table.table.text-black
+            thead
+                th Name
+                th Grade
+                th Size
+                th KG/Per PC
+                th Ready
+                th Required
+
+            tbody
+                tr(ng-repeat="product in productData ")
+                    td {{product.name | capitalize}}
+                    td {{product.grade}}
+                    td {{product.size}}
+                    td {{product.wt_per_peice}}
+                    td {{product.ready}}
+                    td {{product.required}}
+
+
+block footJs
+    span#data(data-productdata=products)
+    script. 
+        var productData = $('#data').data('productdata');
+    script(src="/javascripts/controller/productController.js")
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

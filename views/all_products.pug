@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+    .container
+        .card.shadow.mt-3.p-3
+            .row.text-center.font-weight-bold
+                .col Name
+                .col Ready
+                .col Required
+        each product in products
+            .card.shadow.mt-2.p-3
+                .row.text-center
+                    .col=product.name
+                    .col=product.ready
+                    .col=product.required
+
+
+
+block footJs

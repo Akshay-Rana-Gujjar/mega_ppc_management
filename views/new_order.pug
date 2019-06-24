@@ -1,0 +1,136 @@
+extends layout
+
+block content
+    style. 
+        button.close{
+                position: absolute;
+                right: 10px;
+                z-index: 1000;
+                color: red;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+            input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    .container-fluid(ng-controller="newOrderController")
+        .text-center 
+            h4 New Order Entry 
+        form(autocomplete="off" ng-submit="addOrderSubmit()")
+            .row
+                .col-12.mt-3.mb-5
+                    .container
+                        .pt-2
+                            .card.p-2.rounded-0.sticky-top.pt-2.shadow
+                                .row
+                                    .col-4
+                                        .form-group
+                                            label Customer Name
+                                            //- <input class="form-control" id="orderDate"  ng-model="orderDate.order_date" />
+                                            select.custom-select(ng-model="newOrder.customer_name" required)
+                                                option(value disabled selected)
+                                                option( ng-repeat="customer in customers" ng-value="customer.name")   {{customer.name}} 
+                                    .col-4
+                                        .form-group
+                                            label P.O No.
+                                            input.form-control(type="text", name="" ng-model="newOrder.po_no" required)
+                                    .col-4
+                                        .form-group
+                                            label P.O Date                          
+                                            input.form-control#poDate(type="text", required  readonly)
+                                    
+                                    .col-4
+                                        .form-group
+                                            label Sale Person Code (MKT)
+                                            select.custom-select(ng-model="newOrder.mkt" required)
+                                                option(value disabled selected)
+                                                option( ng-repeat="mktCode in mktCodes" ng-value="mktCode.code")   {{mktCode.code}}
+
+                                    .col-4
+                                        .form-group
+                                            label Order Date                          
+                                            input.form-control#orderDate(type="text", required  readonly)
+                                    .col-4
+                                        .form-group
+                                            label PAY. Terms
+                                            input.form-control(type="text", ng-model="newOrder.pyt" required)
+                                    .col-4
+                                        .form-group
+                                            label FRTG. (Transport Charge)
+                                            input.form-control(type="text", ng-model="newOrder.frtg" required)
+
+                .col-11
+                    div.pt-2(ng-repeat="newOrder in orderData" )
+                        .card.p-2.rounded-0.d-block.shadow-sm(ng-class="{'mt-2': $index!=0}")
+                            button.close(ng-if="$index!=0" style="cursor:pointer" ng-click="removeOrderRow($index)") &times;
+                               
+                                
+                            .row
+
+                                .col-1
+                                    .form-group
+                                        label Product
+                                        select.custom-select(ng-model="newOrder.product" required)
+                                            option(value disabled selected)
+                                            option( ng-repeat="product in products" ng-value="product") {{product.name | capitalize}}  
+                                .col-1
+                                    .form-group
+                                        label Grade
+                                        select.custom-select(ng-model="newOrder.grade" required)
+                                            option(value disabled selected)
+                                            option( ng-repeat="grade in grades" ng-value="grade.name")   {{grade.name}}      
+                                .col-1
+                                    .form-group
+                                        label Supply Condition
+                                        select.custom-select(ng-model="newOrder.sup_condi" required)
+                                            option(value disabled selected)
+                                            option( ng-repeat="cond in sup_cond" ng-value="cond.name")   {{cond.name}}  
+                                .col-1
+                                    .form-group
+                                        label Size
+                                        select.custom-select.px-0(ng-model="newOrder.size" required)
+                                            option(value disabled selected) 
+                                            option( ng-repeat="size in sizes[newOrder.product.name]" ng-value="size.size")   {{size.size}}    
+                                
+                                .col-1
+                                    .form-group
+                                        label Piece
+                                        input.form-control(type="number", min="1" name="" ng-model="newOrder.piece" required ng-change="updateQuantity($index)")
+                                
+                                
+                               
+                                
+                                .col-1
+                                    .form-group
+                                        label Quantity (KG)
+                                        input.form-control(type="number", min="1" name="" ng-model="newOrder.quantity" required 1value="{newOrder.piece * pieceData[newOrder.size] }}" ng-change="updatePiece($index)")
+                                
+                                .col-1
+                                    .form-group
+                                        label Rate
+                                        input.form-control(type="number", min="1" step=".01" name="" ng-model="newOrder.rate" required)  
+
+                                .col-2
+                                    .form-group
+                                        label Delivery Date
+                                        input.px-0( id="{{'deliveryDate'+$index}}" required  readonly )
+                                        span(ng-init="initDatetime($parent.orderData.length)")
+
+                          
+                                .col-3
+                                    .form-group
+                                        label Remarks
+                                        input.form-control(type="text", ng-model="newOrder.remarks")
+
+                .col-1 
+                    .pt-2.sticky-top
+                        button.btn.btn-outline-dark.shadow-lg(ng-click="addOrderRow()" type="button") Add more row
+                        //- button.btn.btn-outline-dark.p-3.rounded-circle.shadow-lg(ng-click="addOrderRow()" type="button")
+                        //-     i.material-icons.align-middle add
+                .col-12.text-center.mt-5.mb-4
+                    button.btn.btn-dark.mt-2.px-5.py-3(type="submit" ) Create Order
+
+
+block footJs
+    script(src="/javascripts/controller/newOrderController.js")
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

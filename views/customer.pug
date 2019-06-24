@@ -1,0 +1,88 @@
+extends layout
+
+block content
+    style. 
+        button.close{
+                position: absolute;
+                right: 10px;
+                z-index: 1000;
+                color: red;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+            input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        .text-black{color:black!important;}
+    
+    .container-fluid(ng-controller="customerController")
+        span(ng-init="displayNewCustomerForm= false") 
+        .form-inline.my-3.justify-content-end.d-print-none.mb-3
+            button.btn.btn-secondary.btn-sm.mx-1.align-middle( ng-click="displayNewCustomerForm= true")
+                i.material-icons.align-middle add
+                | New Customer
+            .input-group
+                .input-group-prepend
+                    span#basic-addon1.input-group-text
+                        i.material-icons search
+                input.form-control(type='text', placeholder='search...' ng-model="search")
+
+               
+        .container(ng-show="displayNewCustomerForm")
+            
+            .card.p-3.my-5.shadow
+                button.close(style="cursor:pointer" ng-click="displayNewCustomerForm= false") &times;
+                .card-title 
+                    h3 Add New Customer
+                
+                form(autocomplete="off" ng-submit="addCustomerSubmit()")
+                    .row
+                        .col-6
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Customer Name" ng-model="newCustomerData.name" required)
+                        .col-6
+                            .form-group
+                                input.form-control(type="number", name="" placeholder="Customer Mobile " ng-model="newCustomerData.mobile" )
+                        .col-6
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Customer Website" ng-model="newCustomerData.website" )
+                        .col-6
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Customer GST NO." ng-model="newCustomerData.gst" required)
+                        .col-12
+                            .form-group
+                                input.form-control(type="text" placeholder="Customer Delivery Address" ng-model="newCustomerData.delivery_address" required)    
+                        .col-12
+                            .form-group
+                                input.form-control(type="text", name="" placeholder="Customer Address" ng-model="newCustomerData.address" required)
+                        
+                        
+                
+                        .col-12.text-center.mt-5.mb-4
+                            button.btn.btn-dark.mt-2(type="submit"  ) Add
+               
+
+
+
+        table.table-hover.table.text-black
+            thead
+                tr
+                    th Name
+                    th Address
+                    th Mobile
+                    th Website
+
+            //- tbody(ng-repeat="(orderKey,  orderValue) in ordersData | filter : search | groupBy:'customer_name'" ng-init="grandAmount = 0")                  
+            tr(ng-repeat="cData in customerData | filter : search")
+                td {{cData.name}}
+                td {{cData.address}}
+                td {{cData.mobile}}
+                td {{cData.website}}
+
+
+block footJs
+    span#data(data-customerdata=customerData)
+    script. 
+        var customerData = $('#data').data('customerdata');
+    script(src="/javascripts/controller/customerController.js")
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

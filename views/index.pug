@@ -1,0 +1,94 @@
+extends layout
+
+block content
+  .container(ng-controller="mainController")
+    style.
+      .highlight{
+        font-weight:bold;
+        cursor:pointer;
+      }
+    .card.p-5
+      h2.text-center.card-title Order Summary
+        
+      form(autocomplete="off")
+        .row
+          .col-6    
+            .form-group
+              label Order date
+              
+              <input id="orderDate"  ng-model="orderDate.order_date" />
+            
+          .col-6
+            .form-group
+              label Delivery date
+              <input id="deliveryDate"  ng-model="orderDate.delivery_date" />
+          .col-6
+            .form-group
+              label Mkt
+              input.form-control(type="text", name="" ng-model="orderDate.mkt")
+          .col-6
+            .form-group
+              label Party name
+              input.form-control(type="text", name=""  ng-model="orderDate.customer_name")
+          .col-6
+            .form-group
+              label Grade
+              input.form-control(type="text", name=""  ng-model="orderDate.grade" ng-keyup="complete(orderDate.grade)" ng-blur="removeSuggestion()")
+              <ul class="list-group position-absolute z-index-5">
+                <li class="list-group-item" ng-repeat="gradedata in filterGrade" ng-click="fillTextbox(gradedata)">{{gradedata}}</li>
+              </ul>
+              //- angucomplete-alt(id="ex1" placeholder="Select Grade" selected-object="selectedObj" local-data="grade" search-fields="name" title-field="name" minlength="1" input.form-controlclass="form-control form-control-small" match-class="highlight")
+          .col-6
+            .form-group
+              label SUP.COND.
+              input.form-control(type="text", name="" ng-model="orderDate.sup_condi")
+          .col-6
+            .form-group
+              label RT.
+              input.form-control(type="text", name="" ng-model="orderDate.rt")
+
+          .col-6
+            .form-group
+              label SIZE (IN )
+              input.form-control(type="text", name="" ng-model="orderDate.size")
+
+          .col-6
+
+            .form-group
+              label PC
+              input.form-control(type="text", name="" ng-model="orderDate.pc")
+
+          .col-6
+            .form-group
+              label OB
+              input.form-control(type="text", name="" ng-model="orderDate.ob")
+
+          .col-6
+            .form-group
+              label DES
+              input.form-control(type="text", name="" ng-model="orderDate.des")
+
+          .col-6
+            .form-group
+              label BAL
+              input.form-control(type="text", name="" ng-model="orderDate.bal")
+
+          .col-6
+            .form-group
+              label GT
+              input.form-control(type="text", name="" ng-model="orderDate.gt")
+
+          .col-6
+            .form-group
+              label RDY
+              input.form-control(type="text", name="" ng-model="orderDate.rdy") 
+
+          .col-6     
+            .form-group
+              label REQ
+              input.form-control(type="text", name="" ng-model="orderDate.req")
+          .col-12.text-center
+            button.btn.btn-dark(type="submit" ng-click="addOrder()") Submit      
+
+block footJs
+  script(src="/javascripts/controller/mainController.js")

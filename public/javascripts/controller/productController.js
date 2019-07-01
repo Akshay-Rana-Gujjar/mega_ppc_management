@@ -1,4 +1,4 @@
-app.controller("productController" , function($scope, $http){
+app.controller("productController" , function($scope, $http, $q){
 
     $scope.productData = productData;
 
@@ -6,12 +6,16 @@ app.controller("productController" , function($scope, $http){
 
 
     $scope.addProductSubmit = function(){
-
-        $http.post("/api/v1/product", $scope.newProductData)
+        
+        console.log($scope.newProductData);
+        
+        // return;
+        $http.post("/api/v1/products", $scope.newProductData)
         .then(function(response){
 
             alert("Product Added!!")
-            location.reload();
+            // location.reload();
+            $scope.newProductData = {};
         },function(err){
             console.log(err);
             alert("Error : "+ err);
@@ -20,5 +24,26 @@ app.controller("productController" , function($scope, $http){
     }
 
 
+   
+    $q.all({
+        grades: $http.get("/api/v1/grades"),
+        shapes: $http.get("/api/v1/shapes"),
+        
+    })
+    .then(function (responses) {
+       
+        $scope.grades = responses.grades.data;
+        $scope.shapes = responses.shapes.data;
+       
 
-})
+        console.log(responses)
+
+        // console.log($scope.grades)
+
+    });
+
+
+
+
+
+});

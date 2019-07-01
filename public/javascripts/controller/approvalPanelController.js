@@ -55,8 +55,10 @@ app.controller("approvalPanelController", function($scope, $http, $q){
         console.log(orderID, e.target, index);
 
         $http.put("/api/v1/orders/"+orderID, {status : "hold"})
-        .then(function(response){https://github.com/Akshay-Rana-Gujjar/mega_ppc_management.git
-            console.log(response.https://github.com/Akshay-Rana-Gujjar/mega_ppc_management.git
+        .then(function(response){
+            // https://github.com/Akshay-Rana-Gujjar/mega_ppc_management.git
+            console.log(response)
+            // https://github.com/Akshay-Rana-Gujjar/mega_ppc_management.git
             location.reload();
         },
         function(err){

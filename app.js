@@ -12,6 +12,8 @@ var customersRouter = require('./routes/customer');
 var ordersRouter = require('./routes/order');
 var gradesRouter = require('./routes/grade');
 var productsRouter = require('./routes/product');
+var shapesRouter = require('./routes/shape');
+var mappingRouter = require('./routes/ingot_size_mapping.route');
 
 var app = express();
 
@@ -30,6 +32,8 @@ app.use('/api/v1/customers', customersRouter);
 app.use('/api/v1/orders', ordersRouter);
 app.use('/api/v1/grades', gradesRouter);
 app.use('/api/v1/products', productsRouter);
+app.use('/api/v1/shapes', shapesRouter);
+app.use('/api/v1/size-mapping', mappingRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

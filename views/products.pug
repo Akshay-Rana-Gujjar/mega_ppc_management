@@ -33,24 +33,39 @@ block content
                     .row
                         .col-4
                             .form-group
-                                input.form-control(type="text", name="" placeholder="Product Name" ng-model="newProductData.name" required)
+                                .input-group(ng-if="newProductData.name =='newName' ")
+                                    input.form-control(type="text", name="" placeholder="Product Name" ng-model="newProductData.newName" required)
+                                    .input-group-append(ng-click="newProductData.name = '';newProductData.newName='';")
+                                            i#basic-addon2.input-group-text.material-icons close
+                                select.custom-select(ng-model="newProductData.name" ng-if="newProductData.name !='newName' " required)
+                                    option(value disabled selected) -- Select Name --
+                                    option(value="newName" ) Add new shape name
+                                    option(value="{{shape.name}}"  ng-repeat="shape in shapes" ) {{shape.name | capitalize}}
                         .col-4
                             .form-group
-                                input.form-control(type="text", name="" placeholder="Product Grade" ng-model="newProductData.grade" required)
+                                .input-group(ng-if="newProductData.grade =='newGrade' ")
+                                    input.form-control(type="text", name="" placeholder="New Grade" ng-model="newProductData.newGrade" required )       
+                                    .input-group-append(ng-click="newProductData.grade = '';newProductData.newGrade='';")
+                                        i#basic-addon2.input-group-text.material-icons close
+                                select.custom-select(ng-model="newProductData.grade" ng-if="newProductData.grade !='newGrade' " required)
+                                    option(value disabled selected) -- Select Grade --
+                                    option(value="newGrade" ) Add new grade
+                                    option(value="{{grade.name}}"  ng-repeat="grade in grades" ) {{grade.name}}
+                                    
                         
                         .col-4
                             .form-group
-                                input.form-control(type="text", name="" placeholder="Product Size " ng-model="newProductData.size" )
+                                input.form-control(type="text", name="" placeholder="Product Size " ng-model="newProductData.size"  required)
                         .col-4
                             .form-group
-                                input.form-control(type="number", name="" placeholder="KG/Per PC" ng-model="newProductData.wt_per_peice" )
+                                input.form-control(type="number", name="" placeholder="KG/Per PC" ng-model="newProductData.wt_per_peice"  required)
 
                         .col-4
                             .form-group
-                                input.form-control(type="number", name="" placeholder="Product Ready (KG)" ng-model="newProductData.ready" )
+                                input.form-control(type="number", name="" placeholder="Product Ready (KG)" ng-model="newProductData.ready"  required)
                         .col-4
                             .form-group
-                                input.form-control(type="number", name="" placeholder="Product Required (KG)" ng-model="newProductData.required" )
+                                input.form-control(type="number", name="" placeholder="Product Required (KG)" ng-model="newProductData.required"  required)
                         
                 
                         .col-12.text-center.mt-5.mb-4

@@ -118,8 +118,8 @@ block content
                         td(ng-if="$index != orderValue.length-1")
                         td(ng-if="$index == orderValue.length-1")
                             strong {{getTotal(orderValue, "bal")}}
-                        td {{productData[orderdata.product][orderdata.size].ready}}
-                        td {{productData[orderdata.product][orderdata.size].required}}
+                        td {{productData[orderdata.product][orderdata.grade][orderdata.size].ready}}
+                        td {{productData[orderdata.product][orderdata.grade][orderdata.size].required}}
                         td {{orderdata.pyt}}
                         td {{orderdata.frtg}}
                         td {{getRemarks(orderdata.remarks)}}

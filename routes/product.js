@@ -24,7 +24,7 @@ router.post("/", function(req, res){
   products.save(function(err){
     console.log(err);
     if (err){
-     res.send("err");
+     res.status(500).send("err");
     }else{
         res.send("200! ok");
     }

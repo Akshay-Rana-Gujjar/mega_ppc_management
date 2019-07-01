@@ -4,10 +4,10 @@ app.controller("newOrderController", function ($scope, $http, $q) {
     $scope.grades = [];
     $scope.newOrder = {};
     $scope.products = [
-        { "name": "Ingot" },
-        { "name": "Round Bar" },
-        { "name": "RCS Bar" },
-        { "name": "Flat Bar" },
+        { "name": "ingot" },
+        { "name": "round bar" },
+        { "name": "rcs bar" },
+        { "name": "flat bar" },
     ]
 
     $scope.sup_cond = [
@@ -108,18 +108,18 @@ app.controller("newOrderController", function ($scope, $http, $q) {
                 "size": 156
             }
         ],
-        "ingots": [
+        "ingot": [
             {
                 "size": "4x5"
             },
             {
-                "size": "5 1/2x6 1/2"
+                "size": "5.5x6.5"
             },
             {
                 "size": "7x8"
             },
             {
-                "size": "7 1/4x8 1/4"
+                "size": "7.25x8.25"
             },
             {
                 "size": "8x9"
@@ -315,7 +315,7 @@ app.controller("newOrderController", function ($scope, $http, $q) {
     }).then(function (responses) {
         $scope.customers = responses.customers.data;
         $scope.grades = responses.grades.data;
-        $scope.products = responses.products.data;
+        // $scope.products = responses.products.data;
 
         console.log(responses)
 

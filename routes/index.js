@@ -45,7 +45,7 @@ router.post("/new-order", function (req, res) {
 
   var { product, size, quantity } = body;
   console.log("body =", body);
-  orderNew(product, quantity);
+  // orderNew(product, quantity);
 
   Order.create(body, function () {
     res.send("from order save.");
@@ -210,9 +210,12 @@ router.get("/approval-panel", function(req, res){
 
     products.map(function(productData){
 
-      if(!productStructure[productData.name])
+      if(!productStructure[productData.name]){
         productStructure[productData.name] = {};
-      productStructure[productData.name][productData.size]=productData; 
+      }
+      if(!productStructure[productData.name][productData.grade])
+        productStructure[productData.name][productData.grade] = {};
+      productStructure[productData.name][productData.grade][productData.size]=productData; 
     });
     // map finish
 

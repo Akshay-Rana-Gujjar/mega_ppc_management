@@ -8,7 +8,8 @@ var Customer = require("../model/customer.model");
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.redirect("/all-orders");
+  // res.redirect("/all-orders");
+  res.redirect("/new-order");
   // res.render('index', { title: 'Express' });
 });
 

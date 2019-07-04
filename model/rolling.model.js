@@ -2,19 +2,20 @@ var mongoose = require('mongoose');
 // mongoose.connect('mongodb://localhost/inventory_sample',{ useNewUrlParser: true });
 
 var rollingSchema = new mongoose.Schema({
-    party : String,
+    rolling_mill : String,
     challan_no: String,
     shape: String,
-    input_size : String,
-    ingot_pcs : String,
-    output_size: String,
+    ingot_size : String,
+    ingot_weight : String,
+    created_at: String,
+    grade : String,
+    // output_size: String,
     heat_no: String,
     pieces : String,
     weight: String,
     status: String,
-    no_ingot_pcs: String
-    
-
+    burning_loss: String,
+    remarks: String
 });
 
 

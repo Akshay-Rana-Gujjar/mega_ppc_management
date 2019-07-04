@@ -13,9 +13,10 @@ app.controller("rollingController", function ($scope, $http, $q) {
 
     $scope.rollingData = [{
         shape:"",
-        input_size:"",
+        ingot_size:"",
+        ingot_weight : "",
+        grade: "",
         ingot_pcs:"",
-        output_size:"",
         heat_no:"",
         pieces:"",
         weight:""
@@ -26,9 +27,10 @@ app.controller("rollingController", function ($scope, $http, $q) {
 
         $scope.rollingData.push({
             shape:"",
-            input_size:"",
+            ingot_size:"",
+            ingot_weight : "",
+            grade: "",
             ingot_pcs:"",
-            output_size:"",
             heat_no:"",
             pieces:"",
             weight:""
@@ -41,15 +43,15 @@ app.controller("rollingController", function ($scope, $http, $q) {
         "NGI" : {
             "Round":{
                 "4x5":[32,36,40,42,45,47,50,53,56,60],
-                "5 1/2x6 1/2":[63,66,70,75,80,85],
+                "5.5x6.5":[63,66,70,75,80,85],
                 "7x8":[90],
-                "7 1/4x8 1/4":[95,100,105],
+                "7.25x8.25":[95,100,105],
                 "8x9":[110],
                 "9x10":[118,125,130],
                 "10x11":[142,152,156,170]
             },
             "RCS":{
-                "5 1/2x6 1/2":[63,75],
+                "5.5x6.5":[63,75],
                 "8x9":[100,110],
                 "9x10":[125]
             },
@@ -64,9 +66,9 @@ app.controller("rollingController", function ($scope, $http, $q) {
         "Raghu":{
             "Round":{
                 "4x5":[32,34,36,38,40,42,45,47,50,53,56,60],
-                "5 1/2x6 1/2":[63,66,70,75,80,85],
+                "5.5x6.5":[63,66,70,75,80,85],
                 "7x8":[90],
-                "7 1/4x8 1/4":[100,110,118,125],
+                "7.25x8.25":[100,110,118,125],
                 "8x9":[118,125]
 
             }
@@ -85,9 +87,9 @@ app.controller("rollingController", function ($scope, $http, $q) {
 
     $scope.ingot_input_size = [
         {size:"4x5"},
-        {size:"5 1/2x6 1/2"},
+        {size:"5.5x6.5"},
         {size:"7x8"},
-        {size:"7 1/4x8 1/4"},
+        {size:"7.25x8.25"},
         {size:"8x9"},
         {size:"9x10"},
         {size:"10x11"},

@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var compression = require('compression');
+
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mega_order',{ useNewUrlParser: true });
 
@@ -16,6 +18,8 @@ var shapesRouter = require('./routes/shape');
 var mappingRouter = require('./routes/ingot_size_mapping.route');
 
 var app = express();
+
+app.use(compression())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

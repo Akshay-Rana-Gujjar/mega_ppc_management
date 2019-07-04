@@ -6,7 +6,7 @@ var ingotSizeMappingSchema = new mongoose.Schema({
     substitute_ingot_size: String,
     shape_size : String,
     shape: String,
-    piece_per_kg: String
+    kg_per_piece: String
 });
 
 var IngotSizeMapping = mongoose.model('ingot_size_mapping', ingotSizeMappingSchema);

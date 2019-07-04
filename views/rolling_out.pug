@@ -10,15 +10,15 @@ block content
                     h6.my-2 Choose Rolling Mill :
                     
                     label.mx-2
-                        input.hidden(type="radio", name="rolling_mill" required ng-model="rolling.party" value="NGI")
+                        input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.party" value="NGI")
                         div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow NGI
 
                     label.mx-2
-                        input.hidden(type="radio", name="rolling_mill" required ng-model="rolling.party" value="Raghu")
+                        input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.party" value="Raghu")
                         div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow Raghu
 
                     label.mx-2
-                        input.hidden(type="radio", name="rolling_mill" required ng-model="rolling.party" value="Kisco")
+                        input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.party" value="Kisco")
                         div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow Kisco
 
             .row    
@@ -28,57 +28,64 @@ block content
                         input.form-control(type="text", name="" required ng-model="rolling.challan_no")
                 
             .row()
-                .col-sm-8
+                .col-sm-10
                     div(ng-repeat="rolling in rollingData")
                         .row
                             
-                            .col-sm-2.mt-3
+                            .col-sm-1.mt-3
                                 .form-group
                                     label Shape
                                     //- input.form-control(type="text", name="" ng-model="orderDate.mkt")
                                     select.custom-select(ng-model="rolling.shape" required)
                                         option(value disabled selected)
                                         option( ng-repeat="product in products" ng-value="product.name") {{product.name}}                    
-                            .col-sm-2.mt-3
+                            .col-sm-1.mt-3
                                 .form-group
                                     label Ingot Size
                                     
-                                    select.custom-select(ng-model="rolling.input_size" required)
+                                    select.custom-select(ng-model="rolling.input_size" required ng-change="rolling.weight = calculateTotalWeight(rolling.input_size.weight, rolling.pieces)")
                                         option(value disabled selected)
-                                        option(ng-repeat="ingotSize in ingot_input_size" ng-value="ingotSize.size" ng-bind="ingotSize.size")
+                                        option(ng-repeat="ingotSize in ingot_input_size" ng-value="ingotSize" ng-bind="ingotSize.size")
                             .col-sm-1.mt-3
                                 .form-group.d-inline-block
-                                    label Ingot Count
-                                    input.form-control.d-inline(type="text", name="" required ng-model="rolling.ingot_pcs")
+                                    label Ingot Weight
+                                        small (KG)
+                                    input.form-control.d-inline(type="text", name="" ng-value="rolling.input_size.weight" required ng-model="rolling.ingot_weight" readonly )
                                 
                 
                             
+                            //- .col-sm-1.mt-3
+                            //-     .form-group
+                            //-         label Ingot Pcs
+                            //-         input.form-control(type="text", name="" required ng-model="rolling.no_ingot_pcs")
+
                             .col-sm-1.mt-3
                                 .form-group
-                                    label Ingot Pcs
-                                    input.form-control(type="text", name="" required ng-model="rolling.no_ingot_pcs")
-
+                                    label Shape Size
+                                    input.form-control.border.border-danger.py-3(type="text", name="" readonly value="No Size Found!" ng-show="!sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size.size]" style="font-size: x-small;" data-toggle="tooltip" data-placement="top" title="Please make sure mill, shape and ingot size are selected!")
+                                    select.custom-select(ng-model="rolling.shape_size" ng-show="sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size.size]" required) 
+                                        option(value disabled selected)
+                                        option(ng-repeat="ingotSize in sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size.size]" ng-value="ingotSize" ng-bind="ingotSize" )
                             .col-sm-2.mt-3
                                 .form-group
-                                    label Output Size
-                                    input.form-control.border.border-danger(type="text", name="" readonly value="No Size Found!" ng-show="!sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size]")
-                                    select.custom-select(ng-model="rolling.output_size" ng-show="sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size]" required) 
+                                    label Grade
+                                    select.custom-select(ng-model="rolling.grade" required) 
                                         option(value disabled selected)
-                                        option(ng-repeat="ingotSize in sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size]" ng-value="ingotSize" ng-bind="ingotSize" )
+                                        option(ng-repeat="grade in grades" ng-value="grade.name" ) {{grade.name}}
 
                             .col-sm-2.mt-3
                                 .form-group
                                     label Heat No.
                                     input.form-control(type="text", name="" required ng-model="rolling.heat_no")
 
-                            .col-sm-2.mt-3
+                            .col-sm-1.mt-3
                                 .form-group
                                     label Pieces
-                                    input.form-control(type="text", name="" required ng-model="rolling.pieces")
-                            .col-sm-2.mt-3
+                                    input.form-control(type="text", name="" required ng-model="rolling.pieces" ng-change="rolling.weight = calculateTotalWeight(rolling.input_size.weight, rolling.pieces)")
+                            .col-sm-1.mt-3
                                 .form-group
-                                    label Weight
-                                    input.form-control(type="text", name="" required ng-model="rolling.weight")
+                                    label Weight(KG)
+                                    input.form-control(type="text", name="" required ng-model="rolling.weight" readonly)
                     
                 .col-sm-2.mt-3
                     .pt-2.sticky-top
@@ -96,5 +103,6 @@ block footJs
             
         }
         .hidden{
-            display:none;
+            width:1px;
+            
         }

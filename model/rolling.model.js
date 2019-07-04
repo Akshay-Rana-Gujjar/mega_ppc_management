@@ -9,7 +9,7 @@ var rollingSchema = new mongoose.Schema({
     ingot_weight : String,
     created_at: String,
     grade : String,
-    // output_size: String,
+    shape_size: String,
     heat_no: String,
     pieces : String,
     weight: String,

@@ -18,7 +18,10 @@ var rollingSchema = new mongoose.Schema({
     remarks: String
 });
 
-
+rollingSchema.pre("save", function(next){
+    this.created_at = new Date().getTime();
+    next()
+})
 
 var Rolling = mongoose.model('rolling',rollingSchema);
 

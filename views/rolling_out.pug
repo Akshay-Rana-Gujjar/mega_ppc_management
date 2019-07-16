@@ -1,99 +1,145 @@
 extends layout
 
 block content
-    .container-fluid(ng-controller="rollingController")
-        h3 Job Work (Rolling Mill Out)
-        form(ng-submit="submitRollingData()")
-            .row
-                .col-sm-12
+    
+    div(ng-controller="rollingController")
+        .container-fluid()
+            h3 Job Work (Rolling Mill Out)
+            form(ng-submit="submitRollingData()")
+                .row
+                    .col-sm-12
 
-                    h6.my-2 Choose Rolling Mill :
+                        h6.my-2 Choose Rolling Mill :
+                        
+                        label.mx-2
+                            input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.rolling_mill" value="NGI")
+                            div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow NGI
+
+                        label.mx-2
+                            input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.rolling_mill" value="Raghu")
+                            div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow Raghu
+
+                        label.mx-2
+                            input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.rolling_mill" value="Kisco")
+                            div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow Kisco
+
+                .row    
+                    .col-sm-4.mt-3
+                        .form-group
+                            label Challan No.
+                            input.form-control(type="text", name="" required ng-model="rolling.challan_no")
                     
-                    label.mx-2
-                        input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.party" value="NGI")
-                        div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow NGI
-
-                    label.mx-2
-                        input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.party" value="Raghu")
-                        div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow Raghu
-
-                    label.mx-2
-                        input.hidden.position-absolute(type="radio", name="rolling_mill" required ng-model="rolling.party" value="Kisco")
-                        div.rounded.bg-light.p-3.text-dark.border.border-primary.px-5.shadow Kisco
-
-            .row    
-                .col-sm-4.mt-3
-                    .form-group
-                        label Challan No.
-                        input.form-control(type="text", name="" required ng-model="rolling.challan_no")
-                
-            .row()
-                .col-sm-10
-                    div(ng-repeat="rolling in rollingData")
-                        .row
-                            
-                            .col-sm-1.mt-3
-                                .form-group
-                                    label Shape
-                                    //- input.form-control(type="text", name="" ng-model="orderDate.mkt")
-                                    select.custom-select(ng-model="rolling.shape" required)
-                                        option(value disabled selected)
-                                        option( ng-repeat="product in products" ng-value="product.name") {{product.name}}                    
-                            .col-sm-1.mt-3
-                                .form-group
-                                    label Ingot Size
-                                    
-                                    select.custom-select(ng-model="rolling.input_size" required ng-change="rolling.weight = calculateTotalWeight(rolling.input_size.weight, rolling.pieces)")
-                                        option(value disabled selected)
-                                        option(ng-repeat="ingotSize in ingot_input_size" ng-value="ingotSize" ng-bind="ingotSize.size")
-                            .col-sm-1.mt-3
-                                .form-group.d-inline-block
-                                    label Ingot Weight
-                                        small (KG)
-                                    input.form-control.d-inline(type="text", name="" ng-value="rolling.input_size.weight" required ng-model="rolling.ingot_weight" readonly )
+                .row()
+                    .col-sm-10
+                        div.border(ng-repeat="rolling in rollingData")
+                            button.close(ng-if="$index!=0" style="cursor:pointer" ng-click="$parent.rollingData.splice($index,1)" type="button") &times;
+                            .row
                                 
-                
-                            
-                            //- .col-sm-1.mt-3
-                            //-     .form-group
-                            //-         label Ingot Pcs
-                            //-         input.form-control(type="text", name="" required ng-model="rolling.no_ingot_pcs")
-
-                            .col-sm-1.mt-3
-                                .form-group
-                                    label Shape Size
-                                    input.form-control.border.border-danger.py-3(type="text", name="" readonly value="No Size Found!" ng-show="!sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size.size]" style="font-size: x-small;" data-toggle="tooltip" data-placement="top" title="Please make sure mill, shape and ingot size are selected!")
-                                    select.custom-select(ng-model="rolling.shape_size" ng-show="sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size.size]" required) 
-                                        option(value disabled selected)
-                                        option(ng-repeat="ingotSize in sizes[$parent.rolling.party][rollingData[$index].shape][rollingData[$index].input_size.size]" ng-value="ingotSize" ng-bind="ingotSize" )
-                            .col-sm-2.mt-3
-                                .form-group
-                                    label Grade
-                                    select.custom-select(ng-model="rolling.grade" required) 
-                                        option(value disabled selected)
-                                        option(ng-repeat="grade in grades" ng-value="grade.name" ) {{grade.name}}
-
-                            .col-sm-2.mt-3
-                                .form-group
-                                    label Heat No.
-                                    input.form-control(type="text", name="" required ng-model="rolling.heat_no")
-
-                            .col-sm-1.mt-3
-                                .form-group
-                                    label Pieces
-                                    input.form-control(type="text", name="" required ng-model="rolling.pieces" ng-change="rolling.weight = calculateTotalWeight(rolling.input_size.weight, rolling.pieces)")
-                            .col-sm-1.mt-3
-                                .form-group
-                                    label Weight(KG)
-                                    input.form-control(type="text", name="" required ng-model="rolling.weight" readonly)
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Shape
+                                        //- input.form-control(type="text", name="" ng-model="orderDate.mkt")
+                                        select.custom-select(ng-model="rolling.shape" required)
+                                            option(value disabled selected)
+                                            option( ng-repeat="product in products" ng-value="product.name") {{product.name}}                    
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Ingot Size
+                                        
+                                        select.custom-select(ng-model="rolling.input_size" required ng-change="rolling.weight = calculateTotalWeight(rolling.input_size.weight, rolling.pieces)")
+                                            option(value disabled selected)
+                                            option(ng-repeat="ingotSize in ingot_input_size" ng-value="ingotSize" ng-bind="ingotSize.size")
+                                .col-sm-1.mt-3
+                                    .form-group.d-inline-block
+                                        label Ingot Weight
+                                            small (KG)
+                                        input.form-control.d-inline(type="text", name="" ng-value="rolling.input_size.weight" required ng-model="rolling.ingot_weight" readonly )
+                                    
                     
-                .col-sm-2.mt-3
-                    .pt-2.sticky-top
-                        button.btn.btn-secondary(type="button" ng-click="addMoreSize()") Add sizes on same challan
+                                
+                                //- .col-sm-1.mt-3
+                                //-     .form-group
+                                //-         label Ingot Pcs
+                                //-         input.form-control(type="text", name="" required ng-model="rolling.no_ingot_pcs")
 
-                .col-sm-12.my-3
-                    button.btn.btn-primary(type="submit") Submit
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Shape Size
+                                        input.form-control.border.border-danger.py-3(type="text", name="" readonly value="No Size Found!" ng-show="!sizes[$parent.rolling.rolling_mill][rollingData[$index].shape][rollingData[$index].input_size.size]" style="font-size: x-small;" data-toggle="tooltip" data-placement="top" title="Please make sure mill, shape and ingot size are selected!")
+                                        select.custom-select(ng-model="rolling.shape_size" ng-show="sizes[$parent.rolling.rolling_mill][rollingData[$index].shape][rollingData[$index].input_size.size]" required) 
+                                            option(value disabled selected)
+                                            option(ng-repeat="ingotSize in sizes[$parent.rolling.rolling_mill][rollingData[$index].shape][rollingData[$index].input_size.size]" ng-value="ingotSize" ng-bind="ingotSize" )
+                                .col-sm-2.mt-3
+                                    .form-group
+                                        label Grade
+                                        select.custom-select(ng-model="rolling.grade" required) 
+                                            option(value disabled selected)
+                                            option(ng-repeat="grade in grades" ng-value="grade.name" ) {{grade.name}}
 
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Heat No.
+                                        input.form-control(type="text", name="" required ng-model="rolling.heat_no")
+
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Pieces
+                                        input.form-control(type="text", name="" required ng-model="rolling.pieces" ng-change="rolling.weight = calculateTotalWeight(rolling.input_size.weight, rolling.pieces)")
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Weight(KG)
+                                        input.form-control(type="text", name="" required ng-model="rolling.weight" readonly)
+                                .col-sm-1.mt-3
+                                    .form-group
+                                        label Remarks
+                                        input.form-control(type="text", name="" required ng-model="rolling.remarks")
+                                
+
+
+
+                    .col-sm-2.mt-3
+                        .pt-2.sticky-top
+                            button.btn.btn-secondary(type="button" ng-click="addMoreSize()") Add sizes on same challan
+
+                    .col-sm-12.my-3
+                        button.btn.btn-primary(type="submit") Submit
+        //- hr
+        .container-fluid
+            
+            .form-inline.my-3.justify-content-end.d-print-none
+                button.btn.btn-outline-dark.p-3.rounded-circle.shadow-lg(title="download as csv" ng-click="exportTableToExcel('main-table')")
+                    i.material-icons.align-middle file_download
+            .table-responsive
+                table.table.table-sm.table-hover.text-center#main-table
+                    thead
+                        tr
+                            th Rolling Mill
+                            th Shape
+                            th Shape Size
+                            th Ingot Size
+                            th Ingot Weight
+                            th Challan No.
+                            th Date
+                            th Grade
+                            th Heat No.
+                            th Pieces
+                            th Weight
+                            th Remarks
+                    tr(ng-repeat="rollingdata in allRollingData")
+                        td(ng-bind="rollingdata.rolling_mill")
+                        td(ng-bind="rollingdata.shape")
+                        td(ng-bind="rollingdata.shape_size") {{rollingdata.shape_size}}
+                        td(ng-bind="rollingdata.ingot_size")
+                        td(ng-bind="rollingdata.ingot_weight")
+                        td(ng-bind="rollingdata.challan_no")
+                        td() {{(rollingdata.created_at) | date:'dd.MM.yy'}}
+                        td(ng-bind="rollingdata.grade")
+                        td(ng-bind="rollingdata.heat_no")
+                        td(ng-bind="rollingdata.pieces")
+                        td(ng-bind="rollingdata.weight")
+                        td() {{rollingdata.remarks.toLowerCase() == 'none' ? "": rollingdata.remarks.toLowerCase()}}
+
+            
 block footJs
     script(src="/javascripts/controller/rollingController.js")
     style.
@@ -106,3 +152,10 @@ block footJs
             width:1px;
             
         }
+        button.close{
+                position: absolute;
+                right: 20px;
+                z-index: 1000;
+                color: red;
+        }
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">

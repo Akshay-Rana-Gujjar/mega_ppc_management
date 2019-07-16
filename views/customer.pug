@@ -63,21 +63,21 @@ block content
                
 
 
+        .container1
+            table.table-hover.table.text-black
+                thead
+                    tr
+                        th Name
+                        th Address
+                        th Mobile
+                        th Website
 
-        table.table-hover.table.text-black
-            thead
-                tr
-                    th Name
-                    th Address
-                    th Mobile
-                    th Website
-
-            //- tbody(ng-repeat="(orderKey,  orderValue) in ordersData | filter : search | groupBy:'customer_name'" ng-init="grandAmount = 0")                  
-            tr(ng-repeat="cData in customerData | filter : search")
-                td {{cData.name}}
-                td {{cData.address}}
-                td {{cData.mobile}}
-                td {{cData.website}}
+                //- tbody(ng-repeat="(orderKey,  orderValue) in ordersData | filter : search | groupBy:'customer_name'" ng-init="grandAmount = 0")                  
+                tr(ng-repeat="cData in customerData | filter : search")
+                    td {{cData.name}}
+                    td {{cData.address}}
+                    td {{cData.mobile}}
+                    td {{cData.website}}
 
 
 block footJs

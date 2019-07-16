@@ -175,7 +175,10 @@ router.post("/rolling-out", function (req, res) {
   console.log("\n\nbody ", body);
 
   Rolling.create(body, function (err) {
-    res.send("Added!");
+    if(err)
+      res.status(500).send(err);
+    else
+      res.send("Added!");
   })
 
 });

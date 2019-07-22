@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Rolling = require("../model/rolling.model");
+var Rolling = require("../model/rolling_in.model");
 
 
 
@@ -14,10 +14,7 @@ router.get("/", (req, res)=>{
         else
             res.send(rollingData);
         
-    })
-
-
-
+    });
 });
 
 

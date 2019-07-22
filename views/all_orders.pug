@@ -5,23 +5,20 @@ block content
 
     .container-fluid(ng-controller="allOrderController")
        
-        //- .row.justify-content-start
+        .row.justify-content-start
             .col-8
                 .row        
                     .col-1 Date Range Filter:
+                    .col-4
+                        .form-group 
+                            label Select Range:                 
+                            input.form-control.date-picker(date-range-picker='', type='text', ng-model='datePicker.date')
+                    
                     .col-2
-                        .form-group
-                            label After
-                            input.form-control#afterDate(type="text", required )
-                    .col-2
-                        .form-group
-                            label Before
-                            input.form-control#beforeDate(type="text", required )
-                    .col-2
-                        button.btn.btn-primary.mt-4(ng-click="dateRangeFilter()") Apply
+                        button.btn.btn-primary.mt-4(ng-click="dateRangeFilterFunction()") Apply
 
                     .col-1 Approval:
-                    .col-2
+                    .col-2.mt-4
                         .form-group
                             select.custom-select(name="" ng-model="filter.approval")
                                 option(value disabled ) -- Select Status --
@@ -29,18 +26,40 @@ block content
                                 option(value="approval") Approved
                                 option(value="hold") Hold
                                 option(value="not approval") Not Approved
-                    .col-2
+                    .col-2.mt-4
                         button.btn.btn-primary(ng-click="approvalFilter(filter.approval)") Apply
-
+                
+                .row
+                    .col-1
+                        small Search in: 
+                    .col-8             
+                        .custom-control.custom-radio.custom-control-inline(ng-init="dateRangeFilterType= 'order_date_timestamp'")
+                            input#customRadioInline1.custom-control-input(type='radio', name='dateRangeFilterType' ng-model="dateRangeFilterType" value="order_date_timestamp")
+                            label.custom-control-label(for='customRadioInline1') Order Date
+                        .custom-control.custom-radio.custom-control-inline
+                            input#customRadioInline2.custom-control-input(type='radio', name='dateRangeFilterType' ng-model="dateRangeFilterType"  value="delivery_date_timestamp")
+                            label.custom-control-label(for='customRadioInline2') Delivery Date
             .col-4
                 .form-inline.my-3.justify-content-end.d-print-none
+                    button.btn.btn-secondary.mr-2.mb-3(ng-click="reload()") Reset All Filters
                     .input-group.mb-3
                         .input-group-prepend
                             span#basic-addon1.input-group-text
                                 i.material-icons search
                         input.form-control(type='text', placeholder='search...' ng-model="search")
+                    .sticky-top.mx-3
+                        button.btn.btn-outline-dark.p-3.rounded-circle.shadow-lg(title="download as csv" ng-click="downloadAsCSV()")
+                            i.material-icons.align-middle file_download
+
+            //- .col-4
+            //-     .form-inline.my-3.justify-content-end.d-print-none
+            //-         .input-group.mb-3
+            //-             .input-group-prepend
+            //-                 span#basic-addon1.input-group-text
+            //-                     i.material-icons search
+            //-             input.form-control(type='text', placeholder='search...' ng-model="search")
             
-        table.table#main-table
+        table.table#main-table.table-sm.table-hover
             tr
                 
                 td O.D
@@ -71,7 +90,7 @@ block content
                     td {{orderdata.delivery_date}}
                     td {{getDiffDays(orderdata.delivery_date)}}
                     td {{orderdata.mkt}}
-                    td {{orderdata.customer_name}}
+                    td(title="{{orderdata.customer_name}}") {{orderdata.customer_name}}
                     //- td(ng-if="$index == 0") {{orderdata.customer_name}}
                     //- td(ng-if="$index != 0")
                     td {{orderdata.po_no}}
@@ -89,7 +108,7 @@ block content
                     
                     td {{orderdata.pyt}}
                     td {{orderdata.frtg}}
-                    td {{orderdata.remarks}}
+                    td {{getRemarks(orderdata.remarks)}}
                     td.text-white(ng-class="{'bg-warning':orderdata.status == 'hold','bg-success':orderdata.status=='approval','bg-danger':orderdata.status=='not approval'}") {{ orderdata.status | capitalize}}
 
 block footJs

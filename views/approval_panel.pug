@@ -102,7 +102,7 @@ block content
                         td {{orderdata.delivery_date}}
                         td {{getDiffDays(orderdata.delivery_date)}}
                         td {{orderdata.mkt}}
-                        td {{orderdata.customer_name}}
+                        td(title="{{orderdata.customer_name}}") {{orderdata.customer_name}}
                         //- td(ng-if="$index == 0") {{orderdata.customer_name}}
                         //- td(ng-if="$index != 0")
                         td {{orderdata.po_no}}

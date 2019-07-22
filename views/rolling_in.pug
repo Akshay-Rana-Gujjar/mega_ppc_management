@@ -4,21 +4,70 @@ block content
     .container-fluid(ng-controller="rollingController")
         h3 Job Work (Rolling Mill In)
         
-        form(ng-submit="")
+        form(ng-submit="showRollingDataByHeat()")
             .row
 
                 .col-sm-2
                     .form-group
-                        label Challan No.
-                        input.form-control(type="text", name="" required)
-
-                .col-sm-2
-                    .form-group
-                        label Size
-                        input.form-control(type="text", name="" required)
+                        label Heat No.
+                        input.form-control(type="text", name="" required ng-model= "rollingIn.heat")
+                .col-sm-10(ng-if="rollingDataByHeat.length")
+                    table.table
+                        thead
+                            tr
+                                th Rolling Mill
+                                th Shape
+                                th Shape Size
+                                th Ingot Size
+                                th Ingot Weight
+                                th Challan No.
+                                th Date
+                                th Grade
+                                th Heat No.
+                                th Pieces
+                                th Weight
+                                th Remarks
+                        tbody
+                            tr(ng-repeat = "heatData in rollingDataByHeat")
+                                td(ng-bind="heatData.rolling_mill")
+                                td(ng-bind="heatData.shape")
+                                td(ng-bind="heatData.shape_size")
+                                td(ng-bind="heatData.ingot_size")
+                                td(ng-bind="heatData.ingot_weight")
+                                td(ng-bind="heatData.challan_no")
+                                td() {{ heatData.created_at | date:'dd.MM.yy'}}
+                                td(ng-bind="heatData.grade")
+                                td(ng-bind="heatData.heat_no")
+                                td(ng-bind="heatData.pieces")
+                                td(ng-bind="heatData.weight")
+                                td {{ heatData.remarks.toLowerCase() == 'none' ? "": heatData.remarks.toLowerCase() }}
 
                 .col-sm-12
                     .text-center
                     button.btn.btn-primary(type="submit" ng-disabled="disableRollingInSubmit") Check
+
+        hr
+        .container(ng-if="rollingDataByHeat.length")
+            h4.my-3 Add Details of Product from Rolling Mill
+            form(ng-submit="addRollingInData()")
+                .row
+                    .col-sm-2
+                        label Shape Pieces
+                        input.form-control(type="text", name="" required ng-model= "rollingIn.pieces")
+                    .col-sm-2
+                        label Shape Weight
+                        input.form-control(type="number", name="" required ng-model= "rollingIn.weight")
+                    .col-sm-2
+                        label Burning Loss
+                        input.form-control(type="number", name="" required ng-model= "rollingIn.burning_loss")
+                    .col-sm-2
+                        label Remarks
+                        input.form-control(type="text", name="" required ng-model= "rollingIn.remarks")
+
+                button.btn.btn-primary.mt-1(type="submit") Submit
+
+                        
+            
+
 block footJs
     script(src="/javascripts/controller/rollingController.js")

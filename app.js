@@ -17,6 +17,7 @@ var productsRouter = require('./routes/product');
 var shapesRouter = require('./routes/shape');
 var mappingRouter = require('./routes/ingot_size_mapping.route');
 var rollingRouter = require('./routes/rolling.route');
+var rollinginRouter  = require('./routes/rollingin.route');
 
 var app = express();
 
@@ -26,7 +27,7 @@ app.use(compression())
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+app.use(logger('short'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -40,6 +41,7 @@ app.use('/api/v1/products', productsRouter);
 app.use('/api/v1/shapes', shapesRouter);
 app.use('/api/v1/size-mapping', mappingRouter);
 app.use('/api/v1/rolling', rollingRouter);
+app.use('/api/v1/rolling-in', rollinginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

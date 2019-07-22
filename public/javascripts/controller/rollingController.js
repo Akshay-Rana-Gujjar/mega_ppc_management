@@ -246,10 +246,32 @@ app.controller("rollingController", function ($scope, $http, $q) {
 
     $scope.disableRollingInSubmit = false;
 
+    $scope.rollingIn = {};
+
+    $scope.showRollingDataByHeat = function(){
+    
+        $http.get("api/v1/rolling" , {params : {heat_no: $scope.rollingIn.heat}})
+        .then(response=>{
+            console.log("rollingDataByHeat = ", response.data);
+
+            $scope.rollingDataByHeat = response.data
+
+        });
+    }
+
+    $scope.addRollingInData = function(){
+
+        $http.post("api/v1/rolling-in", $scope.rollingIn)
+        .then(response=>{
+
+            console.log(response.data);
+            alert("added");
+
+        });
 
 
 
-
+    }
 
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
